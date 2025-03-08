@@ -13,7 +13,7 @@ namespace ECommerceMVC.Controllers
         {
             var hangHoas = db.HangHoas.AsQueryable();
 
-            if(maLoai.HasValue)
+            if (maLoai.HasValue)
             {
                 hangHoas = hangHoas.Where(h => h.MaLoai == maLoai);
             }
@@ -27,6 +27,28 @@ namespace ECommerceMVC.Controllers
                 MoTaNgan = d.MoTaDonVi ?? "",
                 TenLoai = d.MaLoaiNavigation.TenLoai
             });
+            return View(data);
+        }
+
+        public IActionResult Search(string? query)
+        {
+            var hangHoas = db.HangHoas.AsQueryable();
+
+            if (query != null)
+            {
+                hangHoas = hangHoas.Where(h => h.TenHh.Contains(query));
+            }
+
+            var data = hangHoas.Select(d => new HangHoaVM
+            {
+                MaHH = d.MaHh,
+                TenHH = d.TenHh,
+                HinhAnh = d.Hinh ?? "",
+                DonGia = d.DonGia ?? 0,
+                MoTaNgan = d.MoTaDonVi ?? "",
+                TenLoai = d.MaLoaiNavigation.TenLoai
+            }); 
+
             return View(data);
         }
     }

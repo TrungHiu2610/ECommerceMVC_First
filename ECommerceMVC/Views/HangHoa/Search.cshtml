@@ -1,22 +1,13 @@
 ﻿@model IEnumerable<ECommerceMVC.ViewModels.HangHoaVM>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Search";
     Layout = "_TemplateHangHoa";
 }
 
-@section Breadcrumb {
-    <!-- Single Page Header start -->
-    <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Shop</h1>
-        <ol class="breadcrumb justify-content-center mb-0">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="breadcrumb-item active text-white">Shop</li>
-        </ol>
-    </div>
-    <!-- Single Page Header End -->
-}
+<h1>Kết quả tìm kiếm</h1>
+<h5>Có <b>@Model.Count()</b> sản phẩm</h5>
+
 
 @foreach (var item in Model)
 {
@@ -38,15 +29,3 @@
     </div>
 }
 
-<div class="col-12">
-    <div class="pagination d-flex justify-content-center mt-5">
-        <a href="#" class="rounded">&laquo;</a>
-        <a href="#" class="active rounded">1</a>
-        <a href="#" class="rounded">2</a>
-        <a href="#" class="rounded">3</a>
-        <a href="#" class="rounded">4</a>
-        <a href="#" class="rounded">5</a>
-        <a href="#" class="rounded">6</a>
-        <a href="#" class="rounded">&raquo;</a>
-    </div>
-</div>
