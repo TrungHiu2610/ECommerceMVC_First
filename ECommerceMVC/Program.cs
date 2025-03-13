@@ -12,7 +12,19 @@ builder.Services.AddDbContext<Hshop2023Context>(options =>
 }
 );
 
+// dang ky dung session
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -29,8 +41,11 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+// session
+app.UseSession();
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=HangHoa}/{action=Index}/{id?}");
 
 app.Run();
