@@ -1,0 +1,52 @@
+﻿@model ECommerceMVC.ViewModels.LoginVM
+
+@{
+    ViewData["Title"] = "DangNhap";
+}
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Checkout</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item active text-white">Login</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+
+<!-- Login Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <form asp-controller="KhachHang" asp-action="DangNhap" asp-route-ReturnURL="@ViewBag.ReturnURL">
+            <div class="row d-flex" style="justify-content:center">
+                <div class="col-12 d-flex" style="justify-content:center">
+                        <div class="row">
+                            <div class="text-danger" asp-validation-summary="All">
+                            </div>
+                            <div class="col-12">
+                                <div class="form-item w-100">
+                                    <label asp-for="MaKh" class="form-label my-3"></label>
+                                    <input asp-for="MaKh" type="text" class="form-control">
+                                    <span asp-validation-for="MaKh" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-12 ">
+                                <div class="form-item w-100">
+                                    <label asp-for="MatKhau" class="form-label my-3"></label>
+                                    <input asp-for="MatKhau" type="password" class="form-control">
+                                    <span asp-validation-for="MatKhau" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-4 text-center">
+                                <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-50 text-primary">Đăng Nhập</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+<!-- Checkout Page End -->

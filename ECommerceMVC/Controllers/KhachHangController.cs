@@ -2,7 +2,13 @@
 using ECommerceMVC.Data;
 using ECommerceMVC.Helpers;
 using ECommerceMVC.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ECommerceMVC.Controllers
 {
@@ -23,6 +29,14 @@ namespace ECommerceMVC.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult DangKy()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
         public IActionResult DangKy(RegisterVM model, IFormFile fileImg)
         {
             try
@@ -51,5 +65,91 @@ namespace ECommerceMVC.Controllers
                 return Redirect("/404");
             }
         }
+        [HttpGet]
+        public IActionResult DangNhap(string? ReturnURL)
+        {
+            ViewBag.ReturnURL = ReturnURL;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DangNhap(LoginVM model, string? ReturnURL)
+        {
+            try
+            {
+                ViewBag.ReturnURL = ReturnURL;
+                if (ModelState.IsValid)
+                {
+                    KhachHang kh = db.KhachHangs.SingleOrDefault(x => x.MaKh == model.MaKh);
+                    // mã kh ko tồn tại
+                    if(kh==null)
+                    {
+                        ModelState.AddModelError("Error", "Sai thông tin đăng nhập");
+                    }
+                    else
+                    {
+                        // tài khoản kh bị khóa/hiệu lực = false
+                        if(!kh.HieuLuc)
+                        {
+                            ModelState.AddModelError("Error", "Tài khoản đã bị khóa. Vui lòng liên hệ Admin để hỗ trợ");
+                        }
+                        else
+                        {
+                            // kiểm tra mật khẩu kh nhập bằng cách Encrypt nó và kiểm tra với database
+                            if(model.MatKhau.ToMd5Hash(kh.RandomKey)!=kh.MatKhau)
+                            {
+                                ModelState.AddModelError("Error", "Sai thông tin đăng nhập");
+                            }
+                            else
+                            {
+                                // khai báo claim 
+                                List<Claim> lstClaim = new List<Claim>()
+                                {
+                                    new Claim(ClaimTypes.Email, kh.Email),
+                                    new Claim(ClaimTypes.Name, kh.HoTen),
+                                    new Claim("CustomerID", kh.MaKh),
+
+                                    // claim động gì đó
+                                    new Claim(ClaimTypes.Role, "Customer"),
+                                };
+
+                                // khai báo identity
+                                ClaimsIdentity identity = new ClaimsIdentity(lstClaim, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                                // khai báo claim principal
+                                ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+
+                                await HttpContext.SignInAsync(principal);
+
+                                if(Url.IsLocalUrl(ReturnURL))
+                                {
+                                    return Redirect(ReturnURL);
+                                }
+                                return Redirect("/");
+                            }
+                        }
+                    }
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = ex.Message;
+                return Redirect("/404");
+            }
+        }
+
+        [Authorize]
+        public IActionResult Profile()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DangXuat()
+        {
+            await HttpContext.SignOutAsync();
+            return Redirect("/");
+        }    
     }
 }
