@@ -1,4 +1,5 @@
 using ECommerceMVC.Data;
+using ECommerceMVC.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,9 @@ builder.Services.AddDbContext<Hshop2023Context>(options =>
 
 // dang ky dung session
 builder.Services.AddDistributedMemoryCache();
+
+// dang ky dung AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddSession(options =>
 {
@@ -46,6 +50,6 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=HangHoa}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

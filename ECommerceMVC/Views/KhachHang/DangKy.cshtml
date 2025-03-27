@@ -1,0 +1,85 @@
+﻿@model ECommerceMVC.ViewModels.RegisterVM
+@{
+    Layout = "_LayoutCustomer";
+}
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Checkout</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item active text-white">Register</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+<!-- Checkout Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">Billing details</h1>
+        <form asp-controller="KhachHang" asp-action="DangKy" enctype="multipart/form-data">
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-item w-100">
+                                <label asp-for="MaKh" class="form-label my-3"></label>
+                                <input asp-for="MaKh" type="text" class="form-control">
+                                <span asp-validation-for="MaKh" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-item w-100">
+                                <label asp-for="HoTen" class="form-label my-3"></label>
+                                <input asp-for="HoTen" type="text" class="form-control">
+                                <span asp-validation-for="HoTen" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label asp-for="MatKhau" class="form-label my-3"></label>
+                        <input asp-for="MatKhau" type="password" class="form-control">
+                        <span asp-validation-for="MatKhau" class="text-danger"></span>
+                    </div>
+                    <div class="form-item">
+                        <label asp-for="DiaChi" class="form-label my-3"></label>
+                        <input asp-for="DiaChi" type="text" class="form-control">
+                        <span asp-validation-for="DiaChi" class="text-danger"></span>
+                    </div>
+                    <div class="form-item">
+                        <label asp-for="GioiTinh" class="form-label my-3"></label> <br />
+                        <input asp-for="GioiTinh" type="radio" value="True"> Nam
+                        <input asp-for="GioiTinh" type="radio" value="False"> Nữ
+                        <span asp-validation-for="GioiTinh" class="text-danger"></span>
+                    </div>
+                    <div class="form-item">
+                        <label asp-for="NgaySinh" class="form-label my-3"></label>
+                        <input asp-for="NgaySinh" type="date" class="form-control">
+                        <span asp-validation-for="NgaySinh" class="text-danger"></span>
+                    </div>
+                    <div class="form-item">
+                        <label asp-for="DienThoai" class="form-label my-3"></label>
+                        <input asp-for="DienThoai" type="text" class="form-control">
+                        <span asp-validation-for="DienThoai" class="text-danger"></span>
+                    </div>
+                    <div class="form-item">
+                        <label asp-for="Email" class="form-label my-3"></label>
+                        <input asp-for="Email" type="text" class="form-control">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-item">
+                        <label asp-for="Hinh" class="form-label my-3"></label>
+                        <input asp-for="Hinh" type="file" name="fileImg" class="form-control">
+                        <span asp-validation-for="Hinh" class="text-danger"></span>
+                    </div>
+                    <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                        <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-50 text-primary">Đăng Ký</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        
+    </div>
+</div>
+<!-- Checkout Page End -->
