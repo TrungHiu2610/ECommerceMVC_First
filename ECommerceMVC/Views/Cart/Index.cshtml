@@ -16,6 +16,8 @@
     </ol>
 </div>
 <!-- Single Page Header End -->
+
+
 <!-- Cart Page Start -->
 <div class="container-fluid py-5">
     <div class="container py-5">
@@ -51,7 +53,7 @@
                             <td>
                                 <div class="input-group quantity mt-4" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <form asp-controller="Cart" asp-action="AddToCart" asp-route-maHH="@item.MaHH" asp-route-soLuong="-1">
+                                        <form asp-controller="Cart" asp-action="AddToCart" asp-route-maHH="@item.MaHH" asp-route-soLuong="-1" asp-route-stayInProductsPage="False">
                                             <button class="btn btn-sm btn-minus rounded-circle bg-light border">
                                                 <i class="fa fa-minus"></i>
                                             </button>
@@ -59,7 +61,7 @@
                                     </div>
                                     <input type="text" class="form-control form-control-sm text-center border-0" value="@item.SoLuong">
                                     <div class="input-group-btn">
-                                        <form asp-controller="Cart" asp-action="AddToCart" asp-route-maHH="@item.MaHH">
+                                        <form asp-controller="Cart" asp-action="AddToCart" asp-route-maHH="@item.MaHH" asp-route-soLuong="1" asp-route-stayInProductsPage="False">
                                             <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                                 <i class="fa fa-plus"></i>
                                             </button>
@@ -97,19 +99,12 @@
                             <h5 class="mb-0 me-4">Subtotal:</h5>
                             <p class="mb-0">$@Model.Sum(p => p.ThanhTien)</p>
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <h5 class="mb-0 me-4">Shipping</h5>
-                            <div class="">
-                                <p class="mb-0">Flat rate: $3.00</p>
-                            </div>
-                        </div>
-                        <p class="mb-0 text-end">Shipping to Ukraine.</p>
                     </div>
                     <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                         <h5 class="mb-0 ps-4 me-4">Total</h5>
                         <p class="mb-0 pe-4">$@Model.Sum(p => p.ThanhTien)</p>
                     </div>
-                    <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Proceed Checkout</button>
+                    <a asp-controller="Cart" asp-action="CheckOut" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4">Tới trang thanh toán</a>
                 </div>
             </div>
         </div>

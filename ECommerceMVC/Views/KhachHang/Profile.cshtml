@@ -1,8 +1,11 @@
-﻿
+﻿@model ECommerceMVC.ViewModels.ProfileVM
+
 @{
     ViewData["Title"] = "Profile";
 }
 
 <h1>Profile</h1>
 
-<h2>Chào mừng @Context.User.Identity.Name</h2>
+<h2>Tên đăng nhập: @Model.MaKh</h2>
+<h2>Họ tên @Model.HoTen</h2>
+<h2>Email: @Model.Email</h2>

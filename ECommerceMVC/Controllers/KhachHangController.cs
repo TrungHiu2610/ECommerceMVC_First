@@ -30,6 +30,8 @@ namespace ECommerceMVC.Controllers
         }
 
         [HttpGet]
+
+        #region Sign in
         public IActionResult DangKy()
         {
 
@@ -59,12 +61,15 @@ namespace ECommerceMVC.Controllers
                 }
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TempData["Message"] = ex.Message;
                 return Redirect("/404");
             }
         }
+        #endregion
+
+        #region Login
         [HttpGet]
         public IActionResult DangNhap(string? ReturnURL)
         {
@@ -80,23 +85,23 @@ namespace ECommerceMVC.Controllers
                 ViewBag.ReturnURL = ReturnURL;
                 if (ModelState.IsValid)
                 {
-                    KhachHang kh = db.KhachHangs.SingleOrDefault(x => x.MaKh == model.MaKh);
+                    KhachHang? kh = db.KhachHangs.SingleOrDefault(x => x.MaKh == model.MaKh);
                     // mã kh ko tồn tại
-                    if(kh==null)
+                    if (kh == null)
                     {
                         ModelState.AddModelError("Error", "Sai thông tin đăng nhập");
                     }
                     else
                     {
                         // tài khoản kh bị khóa/hiệu lực = false
-                        if(!kh.HieuLuc)
+                        if (!kh.HieuLuc)
                         {
                             ModelState.AddModelError("Error", "Tài khoản đã bị khóa. Vui lòng liên hệ Admin để hỗ trợ");
                         }
                         else
                         {
                             // kiểm tra mật khẩu kh nhập bằng cách Encrypt nó và kiểm tra với database
-                            if(model.MatKhau.ToMd5Hash(kh.RandomKey)!=kh.MatKhau)
+                            if (model.MatKhau.ToMd5Hash(kh.RandomKey) != kh.MatKhau)
                             {
                                 ModelState.AddModelError("Error", "Sai thông tin đăng nhập");
                             }
@@ -107,7 +112,7 @@ namespace ECommerceMVC.Controllers
                                 {
                                     new Claim(ClaimTypes.Email, kh.Email),
                                     new Claim(ClaimTypes.Name, kh.HoTen),
-                                    new Claim("CustomerID", kh.MaKh),
+                                    new Claim(MySetting.CLAIM_CUSTOMERID, kh.MaKh),
 
                                     // claim động gì đó
                                     new Claim(ClaimTypes.Role, "Customer"),
@@ -121,7 +126,7 @@ namespace ECommerceMVC.Controllers
 
                                 await HttpContext.SignInAsync(principal);
 
-                                if(Url.IsLocalUrl(ReturnURL))
+                                if (Url.IsLocalUrl(ReturnURL))
                                 {
                                     return Redirect(ReturnURL);
                                 }
@@ -138,11 +143,18 @@ namespace ECommerceMVC.Controllers
                 return Redirect("/404");
             }
         }
+        #endregion
 
         [Authorize]
         public IActionResult Profile()
         {
-            return View();
+            ProfileVM kh = new ProfileVM()
+            {
+                MaKh = HttpContext.User.FindFirstValue(MySetting.CLAIM_CUSTOMERID),
+                HoTen = HttpContext.User.Identity.Name,
+                Email = HttpContext.User.FindFirstValue(ClaimTypes.Email)
+            };
+            return View(kh);
         }
 
         [Authorize]
