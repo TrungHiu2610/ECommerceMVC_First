@@ -35,6 +35,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     options.AccessDeniedPath = "/AccessDenied";
 });
 
+// dang ky Singleton cho PayPal payment
+builder.Services.AddSingleton(new PaypalClient(
+    builder.Configuration["PaypalOptions:AppId"],
+    builder.Configuration["PaypalOptions:AppSecret"],
+    builder.Configuration["PaypalOptions:Mode"]
+){});
+
 var app = builder.Build();
 
 
