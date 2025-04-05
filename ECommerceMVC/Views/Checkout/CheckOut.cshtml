@@ -1,4 +1,5 @@
 ﻿@using ECommerceMVC.ViewModels
+@using ECommerceMVC.Helpers
 @model IEnumerable<CartItem>
 @{
     ViewData["Title"] = "Thanh toán";
@@ -19,7 +20,7 @@
 <div class="container-fluid py-5">
     <div class="container py-5">
         <h1 class="mb-4">Billing details</h1>
-        <form asp-controller="Cart" asp-action="CheckOut">
+        <form asp-controller="Checkout" asp-action="CheckOut">
             <div class="row g-5">
                 <div class="col-md-12 col-lg-6 col-xl-7">
                     <div class="form-check text-start my-3">
@@ -101,7 +102,8 @@
                         </table>
                     </div>
                     <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                        <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Place Order</button>
+                        <input type="submit" name="paymentMethod" value="@MySetting.PAYMENTTYPE_COD" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">
+                        <input type="submit" name="paymentMethod" value="@MySetting.PAYMENTTYPE_VNPAY" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">
                     </div>
                     <div id="paypal-button-container" style="max-width:750px" class="mt-3"></div>
                 </div>
@@ -134,7 +136,7 @@
                 shape:'pill'
             },
             createOrder(data, actions) {
-                return fetch("/Cart/create-paypal-order", {
+                return fetch("/Checkout/create-paypal-order", {
                     method: "POST",
                 })
                 .then((response) => {
@@ -151,7 +153,7 @@
                 });
             },
             onApprove(data, actions) {
-                return fetch(`/Cart/capture-paypal-order?orderId=${data.orderID}`,
+                return fetch(`/Checkout/capture-paypal-order?orderId=${data.orderID}`,
                 {
                     method: "POST",
                 })
@@ -161,7 +163,7 @@
                     }
                 })
                 .then((result) => {
-                    window.location.href = "/Cart/PaymentSuccess";
+                    window.location.href = "/Checkout/PaymentSuccess";
                 })
                 .catch(error => {
                     alert(error.message);
